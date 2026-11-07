@@ -113,4 +113,3 @@ Open http://localhost:5173. To point the app at a different backend, copy `tb-ca
 
 Built as a class project and presented to the class by a team of classmates.
 
-Contributors: **[ADD NAMES, or delete this section]**
