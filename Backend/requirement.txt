@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+tensorflow>=2.19
+keras>=3.10
+numpy
+pillow
+python-multipart
+# Tip: once everything runs on your computer, replace these lines with the exact
+# versions you used (run `pip freeze` and copy the lines for these packages)
+# so that other people get the same setup.

@@ -39,7 +39,9 @@ export default function XrayUpload({ onResult }) {
       const formData = new FormData();
       formData.append('file', file);
 
-      const BACKEND_URL = 'http://127.0.0.1:8000/predict';
+      // Set VITE_API_URL (see .env.example) when the backend is not on this computer
+      const API_URL = import.meta.env.VITE_API_URL ?? 'http://127.0.0.1:8000';
+      const BACKEND_URL = `${API_URL}/predict`;
 
       // ONLY REAL BACKEND CALL — no mock
       const response = await axios.post(BACKEND_URL, formData, {

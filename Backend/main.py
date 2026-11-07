@@ -1,5 +1,7 @@
 # main.py
-import os, io
+import io
+from pathlib import Path
+
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
@@ -15,9 +17,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load model from folder (SavedModel format)
-MODEL_DIR = "model"
-model = load_model(MODEL_DIR)
+# Load the model from the "model" folder next to this file, so the server works
+# no matter which directory it is started from.
+MODEL_DIR = Path(__file__).parent / "model"
+model = load_model(str(MODEL_DIR))
+
+
+@app.get("/")
+def health():
+    """Simple check that the server is running."""
+    return {"status": "ok"}
 
 @app.post("/predict")
 async def predict_xray(file: UploadFile = File(...)):
@@ -34,6 +43,9 @@ async def predict_xray(file: UploadFile = File(...)):
         idx = int(np.argmax(preds))
 
         # simple binary mapping
+        # NOTE: the model has 4 output classes. Index 0 is treated as "No TB" and
+        # every other index as "TB". Confirm this matches the class order used
+        # in training and document the class names in the README.
         if idx == 0:
             label = "No TB Detected"
             confidence = float(preds[0])
